@@ -22,4 +22,5 @@ public class LawCaseResource {
       return ResponseEntity.status(HttpStatus.CREATED).body(lawCaseService.addLawCase(principal, lawCaseDto));
    }
 
+
 }

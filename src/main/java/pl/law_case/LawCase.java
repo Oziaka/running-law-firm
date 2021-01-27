@@ -8,10 +8,7 @@ import pl.law_case.notes.Notes;
 import pl.user.User;
 
 import javax.persistence.*;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @EqualsAndHashCode
 @NoArgsConstructor
@@ -66,8 +63,15 @@ public class LawCase {
       this.priority = priority;
    }
 
-   public void addWorker(User worker){
-      if(workers==null)
+   public void addActivity(Activity activity) {
+      if (activity == null)
+         activities = new ArrayList<>(Collections.singleton(activity));
+      else
+         activities.add(activity);
+   }
+
+   public void addWorker(User worker) {
+      if (workers == null)
          workers = new HashSet<User>(Collections.singleton(worker));
       else
          workers.add(worker);
