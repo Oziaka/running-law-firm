@@ -6,6 +6,7 @@ import pl.court.Court;
 import pl.law_case.activity.Activity;
 import pl.law_case.notes.Notes;
 import pl.user.User;
+import pl.user.directory.Directory;
 
 import javax.persistence.*;
 import java.util.*;
@@ -51,9 +52,13 @@ public class LawCase {
    @OneToMany(mappedBy = "lawCase")
    private List<Notes> notes;
 
+   @OneToOne
+   @MapsId
+   private Directory directory;
+
 
    @Builder
-   public LawCase(Long id, Set<User> workers, Set<Client> clients, List<Activity> activities, Court court, String signature, Priority priority) {
+   public LawCase(Long id, Set<User> workers, Set<Client> clients, List<Activity> activities, Court court, String signature, Priority priority, List<Notes> notes, Directory directory) {
       this.id = id;
       this.workers = workers;
       this.clients = clients;
@@ -61,6 +66,8 @@ public class LawCase {
       this.court = court;
       this.signature = signature;
       this.priority = priority;
+      this.notes = notes;
+      this.directory = directory;
    }
 
    public void addActivity(Activity activity) {

@@ -24,9 +24,9 @@ public class Directory {
    private List<File> files;
 
 
-//   @OneToMany(mappedBy = "directory")
-//   private List<Directory> directories;
-//
-//   @ManyToOne
-//   private Directory directory;
+   @OneToMany(mappedBy = "directory")
+   private List<Directory> directories;
+
+   @ManyToOne
+   private Directory directory;
 }

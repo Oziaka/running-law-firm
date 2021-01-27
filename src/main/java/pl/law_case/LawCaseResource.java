@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @Validated
 @RestController
@@ -22,5 +23,13 @@ public class LawCaseResource {
       return ResponseEntity.status(HttpStatus.CREATED).body(lawCaseService.addLawCase(principal, lawCaseDto));
    }
 
+   @GetMapping("/{lawCaseId}")
+   public ResponseEntity<LawCaseDto> getLawCase(Principal principal, @PathVariable Long lawCaseId){
+      return ResponseEntity.ok(lawCaseService.getLawCase(principal,lawCaseId));
+   }
 
+   @GetMapping
+   public ResponseEntity<List<LawCaseDto>> getLawCases(Principal principal){
+      return ResponseEntity.ok(lawCaseService.getLawCases(principal));
+   }
 }
