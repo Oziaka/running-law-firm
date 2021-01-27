@@ -4,7 +4,7 @@ import lombok.*;
 import pl.client.Client;
 import pl.court.Court;
 import pl.law_case.activity.Activity;
-import pl.law_case.notes.Notes;
+import pl.law_case.notes.Note;
 import pl.user.User;
 import pl.user.directory.Directory;
 
@@ -50,7 +50,7 @@ public class LawCase {
    private Priority priority;
 
    @OneToMany(mappedBy = "lawCase")
-   private List<Notes> notes;
+   private List<Note> notes;
 
    @OneToOne
    @MapsId
@@ -58,7 +58,7 @@ public class LawCase {
 
 
    @Builder
-   public LawCase(Long id, Set<User> workers, Set<Client> clients, List<Activity> activities, Court court, String signature, Priority priority, List<Notes> notes, Directory directory) {
+   public LawCase(Long id, Set<User> workers, Set<Client> clients, List<Activity> activities, Court court, String signature, Priority priority, List<Note> notes, Directory directory) {
       this.id = id;
       this.workers = workers;
       this.clients = clients;

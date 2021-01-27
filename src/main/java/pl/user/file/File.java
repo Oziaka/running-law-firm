@@ -27,6 +27,7 @@ public class File {
    @Lob
    byte[] content;
 
+   @Builder
    public File(Long id, String name, Directory directory, byte[] content) {
       this.id = id;
       this.name = name;

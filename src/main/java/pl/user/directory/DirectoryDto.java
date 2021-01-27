@@ -1,9 +1,8 @@
 package pl.user.directory;
 
+import lombok.Builder;
 import pl.user.file.File;
 
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import java.util.List;
 
 public class DirectoryDto {
@@ -15,4 +14,12 @@ public class DirectoryDto {
    private List<Directory> directories;
 
    private DirectoryDto directoryDto;
+
+   @Builder
+   public DirectoryDto(Long id, List<File> files, List<Directory> directories, DirectoryDto directoryDto) {
+      this.id = id;
+      this.files = files;
+      this.directories = directories;
+      this.directoryDto = directoryDto;
+   }
 }

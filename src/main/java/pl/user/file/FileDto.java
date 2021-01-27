@@ -1,9 +1,8 @@
 package pl.user.file;
 
+import lombok.Builder;
+import org.springframework.web.multipart.MultipartFile;
 import pl.user.directory.Directory;
-
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 
 public class FileDto {
 
@@ -13,7 +12,13 @@ public class FileDto {
 
    private Directory directory;
 
-   byte[] content;
+   MultipartFile content;
 
-
+   @Builder
+   public FileDto(Long id, String name, Directory directory, MultipartFile content) {
+      this.id = id;
+      this.name = name;
+      this.directory = directory;
+      this.content = content;
+   }
 }

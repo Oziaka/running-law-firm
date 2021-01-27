@@ -4,6 +4,7 @@ import lombok.*;
 import pl.law_case.LawCase;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @EqualsAndHashCode
 @NoArgsConstructor
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "notes")
 @ToString
-public class Notes {
+public class Note {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    @Column(name = "law_case_id")
@@ -25,4 +26,15 @@ public class Notes {
 
    @ManyToOne
    private LawCase lawCase;
+
+   private LocalDateTime time;
+
+   @Builder
+   public Note(Long id, String title, String text, LawCase lawCase, LocalDateTime time) {
+      this.id = id;
+      this.title = title;
+      this.text = text;
+      this.lawCase = lawCase;
+      this.time = time;
+   }
 }
