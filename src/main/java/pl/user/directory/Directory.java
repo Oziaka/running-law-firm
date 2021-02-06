@@ -23,10 +23,12 @@ public class Directory {
    @OneToMany(mappedBy = "directory")
    private List<File> files;
 
+   private String name;
 
-   @OneToMany(mappedBy = "directory")
-   private List<Directory> directories;
-
-   @ManyToOne
-   private Directory directory;
+   @Builder
+   public Directory(Long id, List<File> files, String name) {
+      this.id = id;
+      this.files = files;
+      this.name = name;
+   }
 }

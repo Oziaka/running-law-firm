@@ -9,9 +9,13 @@ import pl.user.User;
 @Service
 public class DirectoryService {
 
-   private DirectoryRepository directoryRepository;
+   private DirectoryRepositorery directoryRepository;
 
    public Directory getDirectory(User user, Long directoryId) {
       return directoryRepository.getDirectory(user,directoryId).orElseThrow(()-> new DataNotFoundExeption("Directory not found"));
+   }
+
+   public Directory saveDirectory(Directory directory) {
+      return directoryRepository.save(directory);
    }
 }

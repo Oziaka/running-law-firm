@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.exception.DataNotFoundExeption;
+import pl.exception.NewEntityCanNotHaveIdException;
+import pl.user.directory.Directory;
+import pl.user.directory.DirectoryService;
 import pl.user_role.UserRole;
 import pl.user_role.UserRoleService;
 
@@ -18,14 +21,26 @@ public class UserService {
    private UserRepository userRepository;
    private UserRoleService userRoleService;
    private PasswordEncoder passwordEncoder;
+   private DirectoryService directoryService;
 
    UserDto addUserWithDefaultsResources(UserDto userDto) {
+      if(userDto.getId()!=null)
+         throw new NewEntityCanNotHaveIdException("New user can not have id");
       User user = UserMapper.toEntity(userDto);
       encodePassword(user);
       addDefaultRoles(user);
+      addDefaultDirectory(user);
       user = this.saveUser(user);
       User savedUser = this.saveUser(user);
       return UserMapper.toDtoForSelf(savedUser);
+   }
+
+   private void addDefaultDirectory(User user){
+      Directory mainDirectory = Directory.builder()
+         .name("Main")
+         .build();
+      Directory savedDirectory = directoryService.saveDirectory(mainDirectory);
+      user.setDirectory(savedDirectory);
    }
 
    private void addDefaultRoles(User user) {
@@ -44,7 +59,8 @@ public class UserService {
       if (!isUserHasUniqueEmail(userDto.getEmail()))
          throw new RuntimeException("User must have unique email");
       User user = this.getUser(principal);
-      User updatedUser = updateUserFromNotNullFieldsInUserDto(user, userDto);
+      User updatedUserValue = UserMapper.toEntity(userDto);
+      User updatedUser= updateUserFromNotNullFieldsInUserDto(user, updatedUserValue);
       User savedUser = this.saveUser(updatedUser);
       return UserMapper.toDtoForSelf(savedUser);
    }
@@ -65,13 +81,15 @@ public class UserService {
       return UserMapper.toDtoWithRoles(save);
    }
 
-   private User updateUserFromNotNullFieldsInUserDto(User user, UserDto userDto) {
-//      if (userDto.getUserName() != null)
-//         user.set(userDto.getUserName());
-      if (userDto.getEmail() != null)
-         user.setEmail(userDto.getEmail());
-      if (userDto.getPassword() != null)
-         user.setPassword(userDto.getPassword());
+   private User updateUserFromNotNullFieldsInUserDto(User user, User updatedUserValue) {
+      if(updatedUserValue.getEmail() != null && isUserHasUniqueEmail(updatedUserValue.getEmail()))
+         user.setEmail(updatedUserValue.getEmail());
+      if(updatedUserValue.getPassword() != null)
+         user.setPassword(updatedUserValue.getPassword());
+      if(updatedUserValue.getName() != null)
+         user.setName(updatedUserValue.getName());
+      if(updatedUserValue.getSurename()!=null)
+         user.setName(updatedUserValue.getName());
       return user;
    }
 

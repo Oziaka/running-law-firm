@@ -17,11 +17,12 @@ public class AddressResource {
 
    private AddressService addressService;
 
+   @PutMapping("/add")
    public ResponseEntity<AddressDto> addAddress(Principal principal, @RequestBody AddressDto addressDto) {
       return ResponseEntity.status(HttpStatus.CREATED).body(addressService.addAddress(principal, addressDto));
    }
 
-   @RequestMapping("/{addressId}")
+   @GetMapping("/{addressId}")
    public ResponseEntity<AddressDto> getAddress(Principal principal, @PathVariable Long addressId) {
       return ResponseEntity.ok(addressService.getAddress(principal, addressId));
    }

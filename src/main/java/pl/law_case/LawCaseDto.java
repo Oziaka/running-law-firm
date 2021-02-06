@@ -6,6 +6,7 @@ import pl.court.CourtDto;
 import pl.law_case.activity.ActivityDto;
 import pl.user.UserDto;
 
+import javax.validation.constraints.Null;
 import java.util.List;
 import java.util.Set;
 

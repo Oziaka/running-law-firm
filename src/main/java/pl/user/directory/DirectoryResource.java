@@ -1,5 +1,4 @@
 package pl.user.directory;
 
-public class DirectoryResource
-{
+public class DirectoryResource {
 }

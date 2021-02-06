@@ -2,6 +2,7 @@ package pl.law_case.activity;
 
 import lombok.*;
 
+import javax.persistence.Column;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 

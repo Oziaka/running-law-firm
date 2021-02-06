@@ -16,7 +16,6 @@ import java.util.Map;
 @NoArgsConstructor
 public class UserDto {
 
-   @Null(message = "New user can not have id")
    private Long id;
 
    @UniqueUserEmail(message = "Email is used by another account")

@@ -36,9 +36,7 @@ public class UserResource {
    }
 
    @PostMapping(path = "/user/edit", consumes = APPLICATION_JSON_VALUE)
-   public ResponseEntity<UserDto> editUser(Principal principal, @RequestBody UserDto userDto) {
+   public ResponseEntity<UserDto> editUser(Principal principal,@Valid @RequestBody UserDto userDto) {
       return ResponseEntity.ok(userService.editUser(principal, userDto));
    }
-
-
 }

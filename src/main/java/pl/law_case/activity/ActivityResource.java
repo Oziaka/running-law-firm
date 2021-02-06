@@ -21,4 +21,9 @@ public class ActivityResource {
    public ResponseEntity<ActivityDto> addActivity(Principal principal, @RequestBody ActivityDto activityDto, @PathVariable Long lawCaseId) {
       return ResponseEntity.status(HttpStatus.CREATED).body(activityService.addActivity(principal, activityDto, lawCaseId));
    }
+
+   @PostMapping("{activityId}/edit")
+   public ResponseEntity<ActivityDto> editActivity(Principal principal, @RequestBody ActivityDto activityDto, @PathVariable Long lawCaseId, @PathVariable Long activityId) {
+      return ResponseEntity.ok(activityService.editActivity(principal,activityDto,lawCaseId,activityId));
+   }
 }
