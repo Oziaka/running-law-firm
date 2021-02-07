@@ -7,11 +7,10 @@ import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
 import pl.tool.RandomUtils;
 import pl.user.User;
+import pl.user.UserProvider;
 import pl.user.UserRandomTool;
-import pl.user.UserService;
 
 import java.util.Optional;
-import java.util.Random;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -21,14 +20,14 @@ class AddressResourceTest {
 
    private AddressRepository addressRepository;
    private AddressService addressService;
-   private UserService userService;
+   private UserProvider userProvider;
    private AddressResource addressResource;
 
    @BeforeEach
    void init() {
       addressRepository = Mockito.mock(AddressRepository.class);
-      userService = Mockito.mock(UserService.class);
-      addressService = new AddressService(addressRepository, userService);
+      userProvider = Mockito.mock(UserProvider.class);
+      addressService = new AddressService(addressRepository, userProvider);
       addressResource = new AddressResource(addressService);
    }
 
@@ -39,7 +38,7 @@ class AddressResourceTest {
       User user = UserRandomTool.randomUser();
       // when
       Long addressId = RandomUtils.randomLong();
-      Mockito.when(userService.getUser(any())).thenReturn(user);
+      Mockito.when(userProvider.getUser(any())).thenReturn(user);
       Mockito.when(addressRepository.save(any())).thenAnswer(invocation -> {
          Address address = invocation.getArgument(0, Address.class);
          address.setId(addressId);
@@ -49,21 +48,35 @@ class AddressResourceTest {
       // then
       AddressDto expectedAddressDto = AddressDto.builder().id(addressId).city(addressDto.getCity()).country(addressDto.getCountry()).postcode(addressDto.getPostcode()).street(addressDto.getStreet()).build();
       Assertions.assertEquals(CREATED, addAddressResponseEntity.getStatusCode());
-      Assertions.assertEquals(expectedAddressDto,addAddressResponseEntity.getBody());
+      Assertions.assertEquals(expectedAddressDto, addAddressResponseEntity.getBody());
    }
 
    @Test
-   void getAddressReturnAddressDtoWhenAddressIsUserPropertyAndAddressIsExist(){
+   void getAddressReturnAddressDtoWhenAddressIsUserPropertyAndAddressIsExist() {
       Long addressId = RandomUtils.randomLong();
       Address address = AddressRandomTool.addressBuilder().id(addressId).build();
       User user = UserRandomTool.randomUser();
       // when
-      Mockito.when(userService.getUser(any())).thenReturn(user);
+      Mockito.when(userProvider.getUser(any())).thenReturn(user);
       Mockito.when(addressRepository.findById(any())).thenReturn(Optional.of(address));
       ResponseEntity<AddressDto> getAddressResponseEntity = addressResource.getAddress(user::getName, addressId);
       // then
       AddressDto expectedAddressDto = AddressDto.builder().id(address.getId()).city(address.getCity()).country(address.getCountry()).postcode(address.getPostcode()).street(address.getStreet()).build();
       Assertions.assertEquals(OK, getAddressResponseEntity.getStatusCode());
-      Assertions.assertEquals(expectedAddressDto,getAddressResponseEntity.getBody());
+      Assertions.assertEquals(expectedAddressDto, getAddressResponseEntity.getBody());
+   }
+
+   @Test
+   void removeAddressReturnOnlyStatusWhenAddressBelongsToUserOrHisClientsOrCourtAddressWhichBelongsToUser() {
+      // given
+      Long addressId = RandomUtils.randomLong();
+      Address address = AddressRandomTool.addressBuilder().id(addressId).build();
+      User user = UserRandomTool.randomUser();
+      // when
+      Mockito.when(userProvider.getUser(any())).thenReturn(user);
+      Mockito.when(addressRepository.getUserAddress(any(), any())).thenReturn(Optional.of(address));
+      ResponseEntity removeAddressResponseEntity = addressResource.deleteAddress(user::getName, addressId);
+      // then
+      Assertions.assertEquals(OK, removeAddressResponseEntity.getStatusCode());
    }
 }

@@ -1,4 +1,5 @@
 package pl.tool;
+
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.math.BigDecimal;

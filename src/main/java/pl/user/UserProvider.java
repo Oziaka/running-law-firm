@@ -12,15 +12,15 @@ public class UserProvider {
 
    private UserRepository userRepository;
 
-   public User get(Principal principal) {
-      return get(principal.getName());
+   public User save(User user) {
+      return userRepository.save(user);
    }
 
-   User get(String email) {
+   private User getUser(String email) {
       return userRepository.findByEmail(email).orElseThrow(() -> new DataNotFoundExeption("User not found"));
    }
 
-   public User save(User user) {
-      return userRepository.save(user);
+   public User getUser(Principal principal) {
+      return getUser(principal.getName());
    }
 }

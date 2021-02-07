@@ -3,7 +3,8 @@ package pl.address;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.exception.DataNotFoundExeption;
-import pl.user.UserService;
+import pl.user.User;
+import pl.user.UserProvider;
 
 import java.security.Principal;
 
@@ -12,21 +13,27 @@ import java.security.Principal;
 public class AddressService {
 
    private AddressRepository addressRepository;
-   private UserService userService;
+   private UserProvider userProvider;
 
-   public Address getAddress(Long id) {
-      return addressRepository.findById(id).orElseThrow(() -> new DataNotFoundExeption("Address nor found"));
+   Address getAddress(User user, Long addressId) {
+      return addressRepository.getAddressBelongsToWorkerCourt(user, addressId).orElseGet(() -> addressRepository.getUserAddress(user, addressId).orElseGet(() -> addressRepository.getUserClientAddress(user, addressId).orElseThrow(() -> new DataNotFoundExeption("Address not found exception"))));
    }
 
    public AddressDto addAddress(Principal principal, AddressDto addressDto) {
-      userService.getUser(principal);
+      userProvider.getUser(principal);
       Address address = AddressMapper.toEntity(addressDto);
       Address savedAddress = addressRepository.save(address);
       return AddressMapper.toDto(savedAddress);
    }
 
    public AddressDto getAddress(Principal principal, Long addressId) {
-      userService.getUser(principal);
-      return AddressMapper.toDto(getAddress(addressId));
+      User user = userProvider.getUser(principal);
+      return AddressMapper.toDto(getAddress(user, addressId));
+   }
+
+   public void removeAddress(Principal principal, Long addressId) {
+      User user = userProvider.getUser(principal);
+      Address address = getAddress(user, addressId);
+      addressRepository.delete(address);
    }
 }

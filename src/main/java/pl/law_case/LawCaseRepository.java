@@ -16,5 +16,5 @@ public interface LawCaseRepository extends JpaRepository<LawCase, Long> {
    Optional<LawCase> getLawCase(User user, Long lawCaseId);
 
    @Query("SELECT lc FROM LawCase  lc join  lc.workers w WHERE w = :user")
-   List<LawCase> getAll(@Param("user")User user);
+   List<LawCase> getAll(@Param("user") User user);
 }

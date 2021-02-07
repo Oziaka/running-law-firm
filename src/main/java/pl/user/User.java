@@ -54,14 +54,16 @@ public class User {
    private Directory directory;
 
    @Builder
-   public User(Long id, String email, String password, String userName, Set<UserRole> roles, List<UserNotification> userNotifications, Address address) {
+   public User(Long id, String email, String password, String name, String surename, Set<UserRole> roles, List<UserNotification> userNotifications, Address address, Directory directory) {
       this.id = id;
       this.email = email;
       this.password = password;
-//      this.userName = userName;
+      this.name = name;
+      this.surename = surename;
       this.roles = roles;
       this.userNotifications = userNotifications;
       this.address = address;
+      this.directory = directory;
    }
 
    public void addRole(UserRole userRole) {

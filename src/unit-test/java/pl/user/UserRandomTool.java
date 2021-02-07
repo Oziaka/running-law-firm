@@ -9,6 +9,7 @@ public class UserRandomTool {
    public static UserDto randomUserDto() {
       return randomUserDtoBuilder().build();
    }
+
    public static User randomUser() {
       return randomUserBuilder().build();
    }
@@ -18,6 +19,7 @@ public class UserRandomTool {
          .email(randomEmaiL())
          .password(randomString());
    }
+
    public static User.UserBuilder randomUserBuilder() {
       return User.builder()
          .email(randomEmaiL())

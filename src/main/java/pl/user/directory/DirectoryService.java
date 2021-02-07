@@ -12,7 +12,7 @@ public class DirectoryService {
    private DirectoryRepositorery directoryRepository;
 
    public Directory getDirectory(User user, Long directoryId) {
-      return directoryRepository.getDirectory(user,directoryId).orElseThrow(()-> new DataNotFoundExeption("Directory not found"));
+      return directoryRepository.getDirectory(user, directoryId).orElseThrow(() -> new DataNotFoundExeption("Directory not found"));
    }
 
    public Directory saveDirectory(Directory directory) {

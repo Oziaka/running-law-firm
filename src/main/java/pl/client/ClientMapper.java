@@ -24,5 +24,6 @@ public class ClientMapper {
          .password(client.getPassword())
          .surename(client.getSurename())
          .name(client.getName())
-         .build();   }
+         .build();
+   }
 }

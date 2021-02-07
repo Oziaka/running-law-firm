@@ -1,11 +1,8 @@
 package pl.court;
 
 import lombok.*;
-import pl.address.Address;
 import pl.address.AddressDto;
 
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
 @Getter
 @ToString
 @EqualsAndHashCode

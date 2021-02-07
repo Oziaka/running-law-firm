@@ -29,7 +29,7 @@ public class ClientResource {
    }
 
    @GetMapping
-   public ResponseEntity<List<CLientDto>> getAllClients(Principal principal){
+   public ResponseEntity<List<CLientDto>> getAllClients(Principal principal) {
       return ResponseEntity.ok(clientService.getAllClients(principal));
    }
 }

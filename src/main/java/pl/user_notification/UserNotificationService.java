@@ -19,7 +19,7 @@ public class UserNotificationService {
    private UserProvider userProvider;
 
    List<UserNotificationDto> getNotifications(Principal principal, Pageable pageable, Specification<UserNotification> userNotificationSpecification) {
-      User user = userProvider.get(principal);
+      User user = userProvider.getUser(principal);
 //      userNotificationSpecification.and(new IsUserNotification(user));
       return getAll(pageable, userNotificationSpecification).stream().map(UserNotificationMapper::toDto).collect(Collectors.toList());
    }

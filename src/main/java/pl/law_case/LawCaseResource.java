@@ -19,17 +19,17 @@ public class LawCaseResource {
    private LawCaseService lawCaseService;
 
    @PostMapping("/add")
-   public ResponseEntity<LawCaseDto> addLawCase(Principal principal, @RequestBody LawCaseDto lawCaseDto){
+   public ResponseEntity<LawCaseDto> addLawCase(Principal principal, @RequestBody LawCaseDto lawCaseDto) {
       return ResponseEntity.status(HttpStatus.CREATED).body(lawCaseService.addLawCase(principal, lawCaseDto));
    }
 
    @GetMapping("/{lawCaseId}")
-   public ResponseEntity<LawCaseDto> getLawCase(Principal principal, @PathVariable Long lawCaseId){
-      return ResponseEntity.ok(lawCaseService.getLawCase(principal,lawCaseId));
+   public ResponseEntity<LawCaseDto> getLawCase(Principal principal, @PathVariable Long lawCaseId) {
+      return ResponseEntity.ok(lawCaseService.getLawCase(principal, lawCaseId));
    }
 
    @GetMapping
-   public ResponseEntity<List<LawCaseDto>> getLawCases(Principal principal){
+   public ResponseEntity<List<LawCaseDto>> getLawCases(Principal principal) {
       return ResponseEntity.ok(lawCaseService.getLawCases(principal));
    }
 }

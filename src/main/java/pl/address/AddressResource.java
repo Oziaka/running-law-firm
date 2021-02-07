@@ -26,4 +26,10 @@ public class AddressResource {
    public ResponseEntity<AddressDto> getAddress(Principal principal, @PathVariable Long addressId) {
       return ResponseEntity.ok(addressService.getAddress(principal, addressId));
    }
+
+   @DeleteMapping("/delete/{addressId}")
+   public ResponseEntity deleteAddress(Principal principal, @PathVariable Long addressId) {
+      addressService.removeAddress(principal, addressId);
+      return ResponseEntity.ok().build();
+   }
 }

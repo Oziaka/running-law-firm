@@ -24,25 +24,16 @@ public class UserDto {
    private String email;
 
    @Length(min = 5, message = "Password length must be longer than 5")
-   @NotNull(message = "User must have password")
+   @NotNull(message = "User must havUe password")
    private String password;
-
-   private Map<String, String> items;
 
    private String userName;
 
    @Builder
-   public UserDto(@Null(message = "New user can not have id") Long id, @Email(message = "Must be a well-formed email address") @NotNull(message = "User must have email") String email, @Length(min = 5, message = "Password length must be longer than 5") @NotNull(message = "User must have password") String password, Map<String, String> items, String userName) {
+   public UserDto(Long id, @Email(message = "Must be a well-formed email address") @NotNull(message = "User must have email") String email, @Length(min = 5, message = "Password length must be longer than 5") @NotNull(message = "User must havUe password") String password, String userName) {
       this.id = id;
       this.email = email;
       this.password = password;
-      this.items = items;
       this.userName = userName;
-   }
-
-   public void addItem(String key, String value) {
-      if (items == null)
-         items = new HashMap<>();
-      items.compute(key, (k, l) -> value);
    }
 }

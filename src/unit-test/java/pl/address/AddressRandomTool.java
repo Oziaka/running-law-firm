@@ -10,7 +10,8 @@ public class AddressRandomTool {
          .postcode(RandomUtils.randomString())
          .street(RandomUtils.randomString());
    }
-   public static  AddressDto.AddressDtoBuilder addressDtoBuilder() {
+
+   public static AddressDto.AddressDtoBuilder addressDtoBuilder() {
       return AddressDto.builder()
          .city(RandomUtils.randomString())
          .country(RandomUtils.randomString())

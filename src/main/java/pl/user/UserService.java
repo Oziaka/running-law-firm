@@ -8,7 +8,7 @@ import pl.exception.NewEntityCanNotHaveIdException;
 import pl.user.directory.Directory;
 import pl.user.directory.DirectoryService;
 import pl.user_role.UserRole;
-import pl.user_role.UserRoleService;
+import pl.user_role.UserRoleProvider;
 
 import java.security.Principal;
 
@@ -16,15 +16,13 @@ import java.security.Principal;
 @AllArgsConstructor
 public class UserService {
 
-   private static final String DEFAULT_WALLET_NAME = "Wallet";
-
    private UserRepository userRepository;
-   private UserRoleService userRoleService;
+   private UserRoleProvider userRoleProvider;
    private PasswordEncoder passwordEncoder;
    private DirectoryService directoryService;
 
    UserDto addUserWithDefaultsResources(UserDto userDto) {
-      if(userDto.getId()!=null)
+      if (userDto.getId() != null)
          throw new NewEntityCanNotHaveIdException("New user can not have id");
       User user = UserMapper.toEntity(userDto);
       encodePassword(user);
@@ -35,7 +33,7 @@ public class UserService {
       return UserMapper.toDtoForSelf(savedUser);
    }
 
-   private void addDefaultDirectory(User user){
+   private void addDefaultDirectory(User user) {
       Directory mainDirectory = Directory.builder()
          .name("Main")
          .build();
@@ -44,7 +42,7 @@ public class UserService {
    }
 
    private void addDefaultRoles(User user) {
-      userRoleService.getDefaults().forEach(user::addRole);
+      userRoleProvider.getDefaults().forEach(user::addRole);
    }
 
    private void encodePassword(User user) {
@@ -56,18 +54,16 @@ public class UserService {
    }
 
    UserDto editUser(Principal principal, UserDto userDto) {
-      if (!isUserHasUniqueEmail(userDto.getEmail()))
-         throw new RuntimeException("User must have unique email");
       User user = this.getUser(principal);
       User updatedUserValue = UserMapper.toEntity(userDto);
-      User updatedUser= updateUserFromNotNullFieldsInUserDto(user, updatedUserValue);
+      User updatedUser = updateUserFromNotNullFieldsInUserDto(user, updatedUserValue);
       User savedUser = this.saveUser(updatedUser);
       return UserMapper.toDtoForSelf(savedUser);
    }
 
    public UserDto grantPermission(Long userRoleId, String email) {
       User user = this.getUser(() -> email);
-      UserRole userRole = userRoleService.getOne(userRoleId);
+      UserRole userRole = userRoleProvider.getOne(userRoleId);
       user.addRole(userRole);
       User save = this.saveUser(user);
       return UserMapper.toDtoWithRoles(save);
@@ -75,20 +71,20 @@ public class UserService {
 
    public UserDto revokePermission(Long userRoleId, String email) {
       User user = this.getUser(() -> email);
-      UserRole userRole = userRoleService.getOne(userRoleId);
+      UserRole userRole = userRoleProvider.getOne(userRoleId);
       user.removeRole(userRole);
       User save = this.saveUser(user);
       return UserMapper.toDtoWithRoles(save);
    }
 
    private User updateUserFromNotNullFieldsInUserDto(User user, User updatedUserValue) {
-      if(updatedUserValue.getEmail() != null && isUserHasUniqueEmail(updatedUserValue.getEmail()))
+      if (updatedUserValue.getEmail() != null && isUserHasUniqueEmail(updatedUserValue.getEmail()))
          user.setEmail(updatedUserValue.getEmail());
-      if(updatedUserValue.getPassword() != null)
+      if (updatedUserValue.getPassword() != null)
          user.setPassword(updatedUserValue.getPassword());
-      if(updatedUserValue.getName() != null)
+      if (updatedUserValue.getName() != null)
          user.setName(updatedUserValue.getName());
-      if(updatedUserValue.getSurename()!=null)
+      if (updatedUserValue.getSurename() != null)
          user.setName(updatedUserValue.getName());
       return user;
    }
@@ -101,7 +97,7 @@ public class UserService {
       return userRepository.findByEmail(email).orElseThrow(() -> new DataNotFoundExeption("User not found"));
    }
 
-   public User getUser(Principal principal) {
+   User getUser(Principal principal) {
       return getUser(principal.getName());
    }
 
@@ -109,7 +105,7 @@ public class UserService {
       return userRepository.findByEmail(email).isPresent();
    }
 
-   public User saveUser(User user) {
+   User saveUser(User user) {
       return userRepository.save(user);
    }
 }

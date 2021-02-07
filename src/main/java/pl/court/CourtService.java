@@ -3,9 +3,10 @@ package pl.court;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.address.Address;
-import pl.address.AddressService;
+import pl.address.AddressProvider;
 import pl.exception.DataNotFoundExeption;
-import pl.user.UserService;
+import pl.user.User;
+import pl.user.UserProvider;
 
 import java.security.Principal;
 
@@ -13,25 +14,24 @@ import java.security.Principal;
 @Service
 public class CourtService {
 
-   private UserService userService;
+   private UserProvider userProvider;
    private CourtRepository courtRepository;
-   private AddressService addressService;
+   private AddressProvider addressProvider;
 
-   public CourtDto addCourt(Principal principal, CourtDto courtDto, Long addressId) {
-      userService.getUser(principal);
-      Address address = addressService.getAddress(addressId);
+    CourtDto addCourt(Principal principal, CourtDto courtDto, Long addressId) {
+      User user = userProvider.getUser(principal);
+      Address address = addressProvider.getAddress(user, addressId);
       Court court = CourtMapper.toEntity(courtDto);
       court.setAddress(address);
       Court savedCourt = courtRepository.save(court);
       return CourtMapper.toDto(savedCourt);
    }
 
-   public CourtDto getCourt(Principal principal, Long courtId) {
-      userService.getUser(principal);
+    CourtDto getCourt(Principal principal, Long courtId) {
+      userProvider.getUser(principal);
       Court court = courtRepository.findById(courtId).orElseThrow(() -> new DataNotFoundExeption("Court not found"));
       return CourtMapper.toDto(court);
    }
-
 
 
 }

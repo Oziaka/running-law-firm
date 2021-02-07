@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.exception.DataNotFoundExeption;
 import pl.law_case.LawCase;
-import pl.law_case.LawCaseService;
+import pl.law_case.LawCaseProvider;
 import pl.user.User;
-import pl.user.UserService;
+import pl.user.UserProvider;
 
 import java.security.Principal;
 
@@ -15,20 +15,20 @@ import java.security.Principal;
 public class ActivityService {
 
    private ActivityRepository activityRepository;
-   private UserService userService;
-   private LawCaseService lawCaseService;
+   private UserProvider userProvider;
+   private LawCaseProvider lawCaseProvider;
 
-   public ActivityDto addActivity(Principal principal, ActivityDto activityDto, Long lawCaseId) {
-      User user = userService.getUser(principal);
+   ActivityDto addActivity(Principal principal, ActivityDto activityDto, Long lawCaseId) {
+      User user = userProvider.getUser(principal);
       Activity activity = ActivityMapper.toEntity(activityDto);
-      LawCase lawCase = lawCaseService.getLawCase(user, lawCaseId);
+      LawCase lawCase = lawCaseProvider.getLawCase(user, lawCaseId);
       activity.setLawCase(lawCase);
       Activity savedActivity = activityRepository.save(activity);
       return ActivityMapper.toDto(savedActivity);
    }
 
-   public ActivityDto editActivity(Principal principal, ActivityDto activityNewValue, Long lawCaseId, Long activityId) {
-      User user = userService.getUser(principal);
+   ActivityDto editActivity(Principal principal, ActivityDto activityNewValue, Long lawCaseId, Long activityId) {
+      User user = userProvider.getUser(principal);
       Activity activityWithNewvalue = ActivityMapper.toEntity(activityNewValue);
       Activity activity = getActivity(lawCaseId, activityId, user);
       updatedNoNullFields(activity, activityWithNewvalue);

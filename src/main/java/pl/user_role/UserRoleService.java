@@ -23,15 +23,15 @@ public class UserRoleService {
       return UserRoleMapper.toDto(this.save(role));
    }
 
-   public List<UserRole> getDefaults() {
+    List<UserRole> getDefaults() {
       return userRoleRepository.getDefaultRoles();
    }
 
-   private List<UserRole> getAll() {
+    List<UserRole> getAll() {
       return userRoleRepository.findAll();
    }
 
-   public UserRole getOne(Long userRoleId) {
+    UserRole getOne(Long userRoleId) {
       return userRoleRepository.findById(userRoleId).orElseThrow(() -> new DataNotFoundExeption("User role not found"));
    }
 

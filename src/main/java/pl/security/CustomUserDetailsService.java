@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import pl.user.User;
-import pl.user.UserService;
+import pl.user.UserProvider;
 import pl.user_role.UserRole;
 
 import java.util.Collection;
@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-   private UserService userService;
+   private UserProvider userProvider;
 
    @Override
    public UserDetails loadUserByUsername(String email) {
-      User user = userService.getUser(() -> email);
+      User user = userProvider.getUser(() -> email);
       return new org.springframework.security.core.userdetails.User(
          user.getEmail(),
          user.getPassword(),

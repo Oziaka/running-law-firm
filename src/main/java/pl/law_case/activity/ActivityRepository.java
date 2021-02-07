@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
    @Query("SELECT a FROM Activity a join a.lawCase lc join a.lawCase.workers w WHERE w = :user and :lowCaseId = lc.id and a.id = :id")
-   Optional<Activity> getActivity(@Param("lowCaseId")Long lawCaseId, @Param("id")Long activityId,@Param("user") User user);
+   Optional<Activity> getActivity(@Param("lowCaseId") Long lawCaseId, @Param("id") Long activityId, @Param("user") User user);
 }

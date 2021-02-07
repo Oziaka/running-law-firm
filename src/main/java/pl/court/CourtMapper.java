@@ -3,7 +3,7 @@ package pl.court;
 import pl.address.AddressMapper;
 
 public class CourtMapper {
-   public static Court toEntity(CourtDto courtDto){
+   public static Court toEntity(CourtDto courtDto) {
       return Court.builder()
          .id(courtDto.getId())
          .name(courtDto.getName())
@@ -11,7 +11,7 @@ public class CourtMapper {
          .build();
    }
 
-   public static CourtDto toDto(Court court){
+   public static CourtDto toDto(Court court) {
       return CourtDto.builder()
          .id(court.getId())
          .name(court.getName())

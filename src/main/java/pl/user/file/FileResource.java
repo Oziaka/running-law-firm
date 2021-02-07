@@ -19,7 +19,7 @@ public class FileResource {
    private FileService fileService;
 
    @PostMapping("/add")
-   public ResponseEntity<FileDto> addFileDto(Principal principal, MultipartFile multipartFile, @PathVariable Long directoryId){
-      return ResponseEntity.status(HttpStatus.CREATED).body(fileService.addFile(principal,multipartFile,directoryId));
+   public ResponseEntity<FileDto> addFileDto(Principal principal, MultipartFile multipartFile, @PathVariable Long directoryId) {
+      return ResponseEntity.status(HttpStatus.CREATED).body(fileService.addFile(principal, multipartFile, directoryId));
    }
 }

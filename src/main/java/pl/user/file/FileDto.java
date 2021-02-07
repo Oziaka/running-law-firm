@@ -6,13 +6,10 @@ import pl.user.directory.Directory;
 
 public class FileDto {
 
-   private Long id;
-
-   private String name;
-
-   private Directory directory;
-
    MultipartFile content;
+   private Long id;
+   private String name;
+   private Directory directory;
 
    @Builder
    public FileDto(Long id, String name, Directory directory, MultipartFile content) {

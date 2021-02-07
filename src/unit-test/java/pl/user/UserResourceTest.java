@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.user.directory.DirectoryService;
 import pl.user_role.UserRole;
+import pl.user_role.UserRoleProvider;
 import pl.user_role.UserRoleService;
 
 import java.security.Principal;
@@ -20,22 +21,21 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.http.HttpStatus.CREATED;
 
 class UserResourceTest {
+   private final List<UserRole> defaultUserRoles = List.of(new UserRole("ROLE_USER", "Default role"));
    private UserRepository userRepository;
-   private UserRoleService userRoleService;
+   private UserRoleProvider userRoleProvider;
    private DirectoryService directoryService;
    private UserService userService;
    private PasswordEncoder passwordEncoder;
    private UserResource userResource;
-   private final List<UserRole> defaultUserRoles = List.of(new UserRole("ROLE_USER", "Default role"));
-
 
    @BeforeEach
    void init() {
       userRepository = Mockito.mock(UserRepository.class);
-      userRoleService = Mockito.mock(UserRoleService.class);
+      userRoleProvider = Mockito.mock(UserRoleProvider.class);
       passwordEncoder = Mockito.mock(PasswordEncoder.class);
       directoryService = Mockito.mock(DirectoryService.class);
-      userService = new UserService(userRepository, userRoleService, passwordEncoder,directoryService);
+      userService = new UserService(userRepository, userRoleProvider, passwordEncoder, directoryService);
       userResource = new UserResource(userService);
    }
 
@@ -45,7 +45,7 @@ class UserResourceTest {
       UserDto userDto = UserRandomTool.randomUserDto();
       // when
       Mockito.when(passwordEncoder.encode(any())).thenReturn(userDto.getPassword());
-      Mockito.when(userRoleService.getDefaults()).thenReturn(new ArrayList<>(defaultUserRoles));
+      Mockito.when(userRoleProvider.getDefaults()).thenReturn(new ArrayList<>(defaultUserRoles));
       User user = User.builder().email(userDto.getEmail()).password(userDto.getPassword()).build();
       user.setId(1L);
       Mockito.when(userRepository.save(any())).thenReturn(user);
@@ -59,11 +59,10 @@ class UserResourceTest {
    @Test
    void editUserReturnEditedUserWhenAllFieldsValid() {
       // given
-      User user = UserRandomTool.randomUser();
-      user.setPassword(null);
+      User user = UserRandomTool.randomUserBuilder().password(null).build();
       UserDto userWithUpdatedFields = UserRandomTool.randomUserDto();
       // when
-      Mockito.when(userRepository.findByEmail(any())).thenReturn(Optional.empty(), Optional.of(user));
+      Mockito.when(userRepository.findByEmail(any())).thenReturn(Optional.of(user),Optional.empty());
       Mockito.when(userRepository.save(any())).thenAnswer(invocation -> {
          User userToSave = invocation.getArgument(0, User.class);
          userToSave.setPassword(null);
@@ -72,7 +71,7 @@ class UserResourceTest {
       Principal principal = user::getEmail;
       ResponseEntity<UserDto> updatedUserResponseEntity = userResource.editUser(principal, userWithUpdatedFields);
       // then
-      UserDto expectedUpdatedUser = UserDto.builder().email(userWithUpdatedFields.getEmail()).items(userWithUpdatedFields.getItems()).build();
+      UserDto expectedUpdatedUser = UserDto.builder().email(userWithUpdatedFields.getEmail()).build();
       Assertions.assertEquals(updatedUserResponseEntity.getStatusCode(), HttpStatus.OK);
       Assertions.assertEquals(updatedUserResponseEntity.getBody(), expectedUpdatedUser);
    }

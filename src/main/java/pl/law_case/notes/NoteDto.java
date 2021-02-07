@@ -1,7 +1,6 @@
 package pl.law_case.notes;
 
 import lombok.*;
-import pl.law_case.LawCase;
 import pl.law_case.LawCaseDto;
 
 import java.time.LocalDateTime;

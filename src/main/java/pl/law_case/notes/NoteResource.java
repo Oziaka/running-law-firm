@@ -18,7 +18,7 @@ public class NoteResource {
    private NoteService noteService;
 
    @GetMapping("/add")
-   public ResponseEntity<NoteDto> addNotes(Principal principal, @RequestBody NoteDto noteDto, @PathVariable Long lawCaseId){
-      return ResponseEntity.status(HttpStatus.CREATED).body(noteService.addNote(principal,noteDto,lawCaseId));
+   public ResponseEntity<NoteDto> addNotes(Principal principal, @RequestBody NoteDto noteDto, @PathVariable Long lawCaseId) {
+      return ResponseEntity.status(HttpStatus.CREATED).body(noteService.addNote(principal, noteDto, lawCaseId));
    }
 }
