@@ -1,6 +1,7 @@
 package pl.user.directory;
 
 import lombok.*;
+import pl.user.User;
 import pl.user.file.File;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "file")
+@Table(name = "directory")
 @ToString
 public class Directory {
 
@@ -20,15 +21,15 @@ public class Directory {
    @Column(name = "directory_id")
    private Long id;
 
-   @OneToMany(mappedBy = "directory")
-   private List<File> files;
+//   @OneToMany(mappedBy = "directory")
+//   private List<File> files;
 
    private String name;
 
    @Builder
    public Directory(Long id, List<File> files, String name) {
       this.id = id;
-      this.files = files;
+//      this.files = files;
       this.name = name;
    }
 }

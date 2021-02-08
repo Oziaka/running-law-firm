@@ -7,10 +7,11 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import pl.address.AddressProvider;
+import pl.user.directory.DirectoryProvider;
 import pl.user.directory.DirectoryService;
 import pl.user_role.UserRole;
 import pl.user_role.UserRoleProvider;
-import pl.user_role.UserRoleService;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -24,18 +25,19 @@ class UserResourceTest {
    private final List<UserRole> defaultUserRoles = List.of(new UserRole("ROLE_USER", "Default role"));
    private UserRepository userRepository;
    private UserRoleProvider userRoleProvider;
-   private DirectoryService directoryService;
+   private DirectoryProvider directoryProvider;
    private UserService userService;
    private PasswordEncoder passwordEncoder;
    private UserResource userResource;
+   private AddressProvider addressProvider;
 
    @BeforeEach
    void init() {
       userRepository = Mockito.mock(UserRepository.class);
       userRoleProvider = Mockito.mock(UserRoleProvider.class);
       passwordEncoder = Mockito.mock(PasswordEncoder.class);
-      directoryService = Mockito.mock(DirectoryService.class);
-      userService = new UserService(userRepository, userRoleProvider, passwordEncoder, directoryService);
+      directoryProvider = Mockito.mock(DirectoryProvider.class);
+      userService = new UserService(userRepository, userRoleProvider, passwordEncoder, directoryProvider,addressProvider);
       userResource = new UserResource(userService);
    }
 

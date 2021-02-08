@@ -1,6 +1,7 @@
 package pl.address;
 
 import lombok.*;
+import pl.user.User;
 
 import javax.persistence.*;
 
@@ -16,9 +17,13 @@ public class Address {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    @Column(name = "address_id")
    private Long id;
+
    private String street;
+
    private String city;
+
    private String postcode;
+
    private String country;
 
    @Builder

@@ -46,11 +46,9 @@ public class User {
    private List<UserNotification> userNotifications;
 
    @OneToOne
-   @MapsId
    private Address address;
 
    @OneToOne
-   @MapsId
    private Directory directory;
 
    @Builder

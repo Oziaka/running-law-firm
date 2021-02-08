@@ -14,4 +14,8 @@ public class AddressProvider {
    public Address getAddress(User user, Long addressId) {
       return addressRepository.getAddressBelongsToWorkerCourt(user, addressId).orElseGet(() -> addressRepository.getUserAddress(user, addressId).orElseGet(() -> addressRepository.getUserClientAddress(user, addressId).orElseThrow(() -> new DataNotFoundExeption("Address not found exception"))));
    }
+
+   public Address saveaAddress(Address address) {
+      return addressRepository.save(address);
+   }
 }

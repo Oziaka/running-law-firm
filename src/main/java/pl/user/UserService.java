@@ -3,14 +3,18 @@ package pl.user;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.address.Address;
+import pl.address.AddressProvider;
 import pl.exception.DataNotFoundExeption;
 import pl.exception.NewEntityCanNotHaveIdException;
 import pl.user.directory.Directory;
-import pl.user.directory.DirectoryService;
+import pl.user.directory.DirectoryProvider;
 import pl.user_role.UserRole;
 import pl.user_role.UserRoleProvider;
 
 import java.security.Principal;
+
+import static pl.user.directory.DirectoryFinalValue.DEFALUT_USER_FOLDER_NAME;
 
 @Service
 @AllArgsConstructor
@@ -19,7 +23,8 @@ public class UserService {
    private UserRepository userRepository;
    private UserRoleProvider userRoleProvider;
    private PasswordEncoder passwordEncoder;
-   private DirectoryService directoryService;
+   private DirectoryProvider directoryProvider;
+   private AddressProvider addressProvider;
 
    UserDto addUserWithDefaultsResources(UserDto userDto) {
       if (userDto.getId() != null)
@@ -28,17 +33,24 @@ public class UserService {
       encodePassword(user);
       addDefaultRoles(user);
       addDefaultDirectory(user);
-      user = this.saveUser(user);
-      User savedUser = this.saveUser(user);
+      addDefaultAddress(user);
+      User savedUser = userRepository.save(user);
       return UserMapper.toDtoForSelf(savedUser);
    }
 
+   private void addDefaultAddress(User user) {
+      Address address = Address.builder().build();
+      Address savedAddress = addressProvider.saveaAddress(address);
+      user.setAddress(savedAddress);
+   }
+
+
    private void addDefaultDirectory(User user) {
       Directory mainDirectory = Directory.builder()
-         .name("Main")
+         .name(DEFALUT_USER_FOLDER_NAME)
          .build();
-      Directory savedDirectory = directoryService.saveDirectory(mainDirectory);
-      user.setDirectory(savedDirectory);
+      Directory savedDirectory = directoryProvider.saveDirectory(mainDirectory);
+      user.setDirectory(mainDirectory);
    }
 
    private void addDefaultRoles(User user) {
@@ -57,7 +69,7 @@ public class UserService {
       User user = this.getUser(principal);
       User updatedUserValue = UserMapper.toEntity(userDto);
       User updatedUser = updateUserFromNotNullFieldsInUserDto(user, updatedUserValue);
-      User savedUser = this.saveUser(updatedUser);
+      User savedUser = userRepository.save(updatedUser);
       return UserMapper.toDtoForSelf(savedUser);
    }
 
@@ -65,7 +77,7 @@ public class UserService {
       User user = this.getUser(() -> email);
       UserRole userRole = userRoleProvider.getOne(userRoleId);
       user.addRole(userRole);
-      User save = this.saveUser(user);
+      User save = userRepository.save(user);
       return UserMapper.toDtoWithRoles(save);
    }
 
@@ -73,7 +85,7 @@ public class UserService {
       User user = this.getUser(() -> email);
       UserRole userRole = userRoleProvider.getOne(userRoleId);
       user.removeRole(userRole);
-      User save = this.saveUser(user);
+      User save = userRepository.save(user);
       return UserMapper.toDtoWithRoles(save);
    }
 
@@ -103,9 +115,5 @@ public class UserService {
 
    boolean emailIsUsed(String email) {
       return userRepository.findByEmail(email).isPresent();
-   }
-
-   User saveUser(User user) {
-      return userRepository.save(user);
    }
 }

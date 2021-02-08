@@ -20,7 +20,9 @@ public class File {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    @Column(name = "file_id")
    private Long id;
+
    private String name;
+
    @ManyToOne
    private Directory directory;
 
