@@ -18,7 +18,7 @@ public class CourtService {
    private CourtRepository courtRepository;
    private AddressProvider addressProvider;
 
-    CourtDto addCourt(Principal principal, CourtDto courtDto, Long addressId) {
+   CourtDto addCourt(Principal principal, CourtDto courtDto, Long addressId) {
       User user = userProvider.getUser(principal);
       Address address = addressProvider.getAddress(user, addressId);
       Court court = CourtMapper.toEntity(courtDto);
@@ -27,7 +27,7 @@ public class CourtService {
       return CourtMapper.toDto(savedCourt);
    }
 
-    CourtDto getCourt(Principal principal, Long courtId) {
+   CourtDto getCourt(Principal principal, Long courtId) {
       userProvider.getUser(principal);
       Court court = courtRepository.findById(courtId).orElseThrow(() -> new DataNotFoundExeption("Court not found"));
       return CourtMapper.toDto(court);

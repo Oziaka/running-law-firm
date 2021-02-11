@@ -1,7 +1,6 @@
 package pl.user.directory;
 
 import lombok.*;
-import pl.user.User;
 import pl.user.file.File;
 
 import javax.persistence.*;

@@ -8,7 +8,7 @@ public class NoteMapper {
       return Note.builder()
          .id(noteDto.getId())
          .title(noteDto.getTitle())
-         .time(noteDto.getTime())
+         .createdDate(noteDto.getTime())
          .text(noteDto.getText())
          .lawCase(LawCaseMapper.toEntity(noteDto.getLawCaseDto()))
          .build();
@@ -18,7 +18,7 @@ public class NoteMapper {
       return NoteDto.builder()
          .id(note.getId())
          .title(note.getTitle())
-         .time(note.getTime())
+         .time(note.getCreatedDate())
          .text(note.getText())
          .lawCaseDto(LawCaseMapper.toDto(note.getLawCase()))
          .build();

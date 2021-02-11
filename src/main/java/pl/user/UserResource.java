@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -38,5 +39,10 @@ public class UserResource {
    @PostMapping(path = "/user/edit", consumes = APPLICATION_JSON_VALUE)
    public ResponseEntity<UserDto> editUser(Principal principal, @Valid @RequestBody UserDto userDto) {
       return ResponseEntity.ok(userService.editUser(principal, userDto));
+   }
+
+   @GetMapping(path = "/users", produces = APPLICATION_JSON_VALUE)
+   public ResponseEntity<List<UserDto>> getUsers(Principal principal) {
+      return ResponseEntity.ok(userService.getUsers(principal));
    }
 }

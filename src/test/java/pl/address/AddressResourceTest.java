@@ -5,10 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
+
 import pl.tool.RandomUtils;
+import pl.user.UserRandomTool;
 import pl.user.User;
 import pl.user.UserProvider;
-import pl.user.UserRandomTool;
 
 import java.util.Optional;
 
@@ -51,20 +52,20 @@ class AddressResourceTest {
       Assertions.assertEquals(expectedAddressDto, addAddressResponseEntity.getBody());
    }
 
-   @Test
-   void getAddressReturnAddressDtoWhenAddressIsUserPropertyAndAddressIsExist() {
-      Long addressId = RandomUtils.randomLong();
-      Address address = AddressRandomTool.addressBuilder().id(addressId).build();
-      User user = UserRandomTool.randomUser();
-      // when
-      Mockito.when(userProvider.getUser(any())).thenReturn(user);
-      Mockito.when(addressRepository.findById(any())).thenReturn(Optional.of(address));
-      ResponseEntity<AddressDto> getAddressResponseEntity = addressResource.getAddress(user::getName, addressId);
-      // then
-      AddressDto expectedAddressDto = AddressDto.builder().id(address.getId()).city(address.getCity()).country(address.getCountry()).postcode(address.getPostcode()).street(address.getStreet()).build();
-      Assertions.assertEquals(OK, getAddressResponseEntity.getStatusCode());
-      Assertions.assertEquals(expectedAddressDto, getAddressResponseEntity.getBody());
-   }
+//   @Test
+//   void getAddressReturnAddressDtoWhenAddressIsUserPropertyAndAddressIsExist() {
+//      Long addressId = RandomUtils.randomLong();
+//      Address address = AddressRandomTool.addressBuilder().id(addressId).build();
+//      User user = UserRandomTool.randomUser();
+//      // when
+//      Mockito.when(userProvider.getUser(any())).thenReturn(user);
+//      Mockito.when(addressRepository.findById(any())).thenReturn(Optional.of(address));
+//      ResponseEntity<AddressDto> getAddressResponseEntity = addressResource.getAddress(user::getName, addressId);
+//      // then
+//      AddressDto expectedAddressDto = AddressDto.builder().id(address.getId()).city(address.getCity()).country(address.getCountry()).postcode(address.getPostcode()).street(address.getStreet()).build();
+//      Assertions.assertEquals(OK, getAddressResponseEntity.getStatusCode());
+//      Assertions.assertEquals(expectedAddressDto, getAddressResponseEntity.getBody());
+//   }
 
    @Test
    void removeAddressReturnOnlyStatusWhenAddressBelongsToUserOrHisClientsOrCourtAddressWhichBelongsToUser() {

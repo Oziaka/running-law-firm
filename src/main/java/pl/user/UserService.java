@@ -13,6 +13,8 @@ import pl.user_role.UserRole;
 import pl.user_role.UserRoleProvider;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static pl.user.directory.DirectoryFinalValue.DEFALUT_USER_FOLDER_NAME;
 
@@ -28,19 +30,19 @@ public class UserService {
 
    UserDto addUserWithDefaultsResources(UserDto userDto) {
       if (userDto.getId() != null)
-         throw new NewEntityCanNotHaveIdException("New user can not have id");
+         throw new NewEntityCanNotHaveIdException("New pl.user can not have id");
       User user = UserMapper.toEntity(userDto);
       encodePassword(user);
       addDefaultRoles(user);
       addDefaultDirectory(user);
-      addDefaultAddress(user);
+      user.setAddress(addressProvider.saveAddress(user.getAddress()));
       User savedUser = userRepository.save(user);
       return UserMapper.toDtoForSelf(savedUser);
    }
 
    private void addDefaultAddress(User user) {
       Address address = Address.builder().build();
-      Address savedAddress = addressProvider.saveaAddress(address);
+      Address savedAddress = addressProvider.saveAddress(address);
       user.setAddress(savedAddress);
    }
 
@@ -97,7 +99,9 @@ public class UserService {
       if (updatedUserValue.getName() != null)
          user.setName(updatedUserValue.getName());
       if (updatedUserValue.getSurename() != null)
-         user.setName(updatedUserValue.getName());
+         user.setSurename(updatedUserValue.getSurename());
+      if (updatedUserValue.getUserName() != null)
+         user.setUserName(updatedUserValue.getUserName());
       return user;
    }
 
@@ -115,5 +119,10 @@ public class UserService {
 
    boolean emailIsUsed(String email) {
       return userRepository.findByEmail(email).isPresent();
+   }
+
+   public List<UserDto> getUsers(Principal principal) {
+      getUser(principal);
+      return userRepository.findAll().stream().map(UserMapper::toDto).collect(Collectors.toList());
    }
 }

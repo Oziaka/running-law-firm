@@ -1,6 +1,8 @@
 package pl.user;
 
 
+import pl.address.AddressMapper;
+
 public class UserMapper {
 
    private UserMapper() {
@@ -8,22 +10,34 @@ public class UserMapper {
 
    public static UserDto toDtoForSelf(User user) {
       return UserDto.builder()
+         .id(user.getId())
          .email(user.getEmail())
-//         .userName(user.get())
+         .userName(user.getUserName())
+         .name(user.getName())
+         .surename(user.getSurename())
+         .addressDto(AddressMapper.toDto(user.getAddress()))
          .build();
    }
 
 
    public static User toEntity(UserDto userDto) {
-      return User.builder().email(userDto.getEmail()).password(userDto.getPassword()).build();
+      return User.builder()
+         .id(userDto.getId())
+         .email(userDto.getEmail())
+         .password(userDto.getPassword())
+         .name(userDto.getName())
+         .surename(userDto.getSurename())
+         .userName(userDto.getUserName())
+         .address(AddressMapper.toEntity(userDto.getAddressDto()))
+         .build();
    }
 
    public static UserDto toDto(User user) {
-
       if (user.getEmail() != null)
          return UserDto.builder()
             .email(user.getEmail())
-//            .userName(user.getUserName())
+            .name(user.getName())
+            .surename(user.getSurename())
             .build();
       else
          return UserDto.builder()

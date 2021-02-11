@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "\"pl.user\"")
 @ToString
 public class User {
 
@@ -33,6 +33,7 @@ public class User {
    private String password;
 
    private String name;
+   private String userName;
 
    private String surename;
 
@@ -46,17 +47,18 @@ public class User {
    private List<UserNotification> userNotifications;
 
    @OneToOne
-   private Address address;
+   private Address address = new Address();
 
    @OneToOne
    private Directory directory;
 
    @Builder
-   public User(Long id, String email, String password, String name, String surename, Set<UserRole> roles, List<UserNotification> userNotifications, Address address, Directory directory) {
+   public User(Long id, String email, String password, String name, String userName, String surename, Set<UserRole> roles, List<UserNotification> userNotifications, Address address, Directory directory) {
       this.id = id;
       this.email = email;
       this.password = password;
       this.name = name;
+      this.userName = userName;
       this.surename = surename;
       this.roles = roles;
       this.userNotifications = userNotifications;

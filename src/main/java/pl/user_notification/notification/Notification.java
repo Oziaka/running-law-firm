@@ -4,7 +4,6 @@ import lombok.*;
 import pl.user_notification.UserNotification;
 
 import javax.persistence.*;
-import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -29,8 +28,6 @@ public class Notification {
    private String description;
 
    private LocalDateTime dateOfAdding;
-
-   private Blob image;
 
    @OneToMany(mappedBy = "notification")
    private List<UserNotification> userNotification;

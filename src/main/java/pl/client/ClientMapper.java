@@ -9,7 +9,6 @@ public class ClientMapper {
          .address(AddressMapper.toEntity(cLientDto.getAddressDto()))
          .email(cLientDto.getEmail())
          .phoneNumber(cLientDto.getPhoneNumber())
-         .password(cLientDto.getPassword())
          .surename(cLientDto.getSurename())
          .name(cLientDto.getName())
          .build();
@@ -21,7 +20,6 @@ public class ClientMapper {
          .addressDto(AddressMapper.toDto(client.getAddress()))
          .email(client.getEmail())
          .phoneNumber(client.getPhoneNumber())
-         .password(client.getPassword())
          .surename(client.getSurename())
          .name(client.getName())
          .build();

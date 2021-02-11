@@ -1,7 +1,6 @@
 package pl.address;
 
 import lombok.*;
-import pl.user.User;
 
 import javax.persistence.*;
 

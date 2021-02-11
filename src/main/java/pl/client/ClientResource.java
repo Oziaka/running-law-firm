@@ -2,6 +2,7 @@ package pl.client;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class ClientResource {
       return ResponseEntity.ok(clientService.getClient(principal, clientId));
    }
 
-   @GetMapping
+   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
    public ResponseEntity<List<CLientDto>> getAllClients(Principal principal) {
       return ResponseEntity.ok(clientService.getAllClients(principal));
    }

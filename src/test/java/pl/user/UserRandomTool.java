@@ -1,6 +1,6 @@
 package pl.user;
 
-import pl.tool.RandomUtils;
+import pl.address.AddressRandomTool;
 
 import static pl.tool.RandomUtils.randomString;
 
@@ -17,16 +17,25 @@ public class UserRandomTool {
    public static UserDto.UserDtoBuilder randomUserDtoBuilder() {
       return UserDto.builder()
          .email(randomEmaiL())
-         .password(randomString());
+         .password(randomString())
+         .addressDto(AddressRandomTool.addressDtoBuilder().build())
+         .surename(randomString())
+         .name(randomString())
+         .userName(randomString());
    }
 
    public static User.UserBuilder randomUserBuilder() {
       return User.builder()
          .email(randomEmaiL())
-         .password(randomString());
+         .password(randomString())
+         .address(AddressRandomTool.addressBuilder().build())
+         .surename(randomString())
+         .name(randomString())
+         .userName(randomString());
+
    }
 
    private static String randomEmaiL() {
-      return randomString() + RandomUtils.randomString(3) + '@' + RandomUtils.randomString(2) + "." + RandomUtils.randomString(2);
+      return randomString() + '@' + randomString(2) + "." + randomString(2);
    }
 }

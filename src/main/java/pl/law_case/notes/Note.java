@@ -27,14 +27,14 @@ public class Note {
    @ManyToOne
    private LawCase lawCase;
 
-   private LocalDateTime time;
+   private LocalDateTime createdDate;
 
    @Builder
-   public Note(Long id, String title, String text, LawCase lawCase, LocalDateTime time) {
+   public Note(Long id, String title, String text, LawCase lawCase, LocalDateTime createdDate) {
       this.id = id;
       this.title = title;
       this.text = text;
       this.lawCase = lawCase;
-      this.time = time;
+      this.createdDate = createdDate;
    }
 }

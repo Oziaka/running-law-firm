@@ -21,8 +21,6 @@ public class Client {
 
    private String email;
 
-   private String password;
-
    private String name;
 
    private String surename;
@@ -34,10 +32,9 @@ public class Client {
    private Address address;
 
    @Builder
-   public Client(Long id, String email, String password, String name, String surename, String phoneNumber, Address address) {
+   public Client(Long id, String email, String name, String surename, String phoneNumber, Address address) {
       this.id = id;
       this.email = email;
-      this.password = password;
       this.name = name;
       this.surename = surename;
       this.phoneNumber = phoneNumber;

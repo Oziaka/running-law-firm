@@ -24,7 +24,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
    public ResponseEntity handleAllExceptions(Exception exception, WebRequest request) {
       exception.printStackTrace();
       return ResponseEntity.status(BAD_REQUEST)
-         .body(Map.of("Server Error", Collections.singletonList(exception.getLocalizedMessage().replace("addTransaction.<cross-parameter>: ", ""))));
+         .body(Map.of("Server Error", Collections.singletonList(exception.getLocalizedMessage())));
    }
 
    @Override
@@ -37,7 +37,6 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             .collect(Collectors.toMap(Map.Entry::getKey, fieldError -> fieldError.getValue()
                .stream()
                .map(ObjectError::getDefaultMessage)
-               .map(message -> message.replace("addTransaction.<cross-parameter>:", ""))
                .collect(Collectors.toList()))));
    }
 }
